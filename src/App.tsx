@@ -6,6 +6,7 @@ import { Danmu } from './types';
 function App() {
   const [danmus, setDanmus] = useState<Danmu[]>([]);
   const [isDanmuEnabled, setIsDanmuEnabled] = useState(true);
+  const [videoUrl, setVideoUrl] = useState('');
 
   const handleAddDanmu = useCallback((newDanmus: Danmu[]) => {
     setDanmus(prev => [...prev, ...newDanmus]);
@@ -32,6 +33,10 @@ function App() {
     })));
   }, []);
 
+  const handleVideoUrlChange = useCallback((url: string) => {
+    setVideoUrl(url);
+  }, []);
+
   return (
     <div style={{
       fontFamily: "'Microsoft YaHei', sans-serif",
@@ -49,6 +54,7 @@ function App() {
         danmus={danmus}
         isDanmuEnabled={isDanmuEnabled}
         onSeek={handleSeek}
+        videoUrl={videoUrl}
       />
       
       <ConfigPanel
@@ -56,6 +62,7 @@ function App() {
         onClearDanmu={handleClearDanmu}
         onToggleDanmu={handleToggleDanmu}
         isDanmuEnabled={isDanmuEnabled}
+        onVideoUrlChange={handleVideoUrlChange}
       />
     </div>
   );

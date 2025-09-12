@@ -7,9 +7,10 @@ interface VideoPlayerProps {
   danmus: Danmu[];
   isDanmuEnabled: boolean;
   onSeek?: () => void;
+  videoUrl?: string;
 }
 
-export default function VideoPlayer({ danmus, isDanmuEnabled, onSeek }: VideoPlayerProps) {
+export default function VideoPlayer({ danmus, isDanmuEnabled, onSeek, videoUrl }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const danmuContainerRef = useRef<HTMLDivElement>(null);
   const progressContainerRef = useRef<HTMLDivElement>(null);
@@ -48,6 +49,13 @@ export default function VideoPlayer({ danmus, isDanmuEnabled, onSeek }: VideoPla
       video.removeEventListener('loadedmetadata', updateTime);
     };
   }, [danmus, onSeek]);
+
+  // Load video when videoUrl changes
+  useEffect(() => {
+    if (videoUrl) {
+      loadVideo(videoUrl);
+    }
+  }, [videoUrl]);
 
   const clearActiveDanmus = () => {
     if (!danmuContainerRef.current) return;
@@ -122,13 +130,11 @@ export default function VideoPlayer({ danmus, isDanmuEnabled, onSeek }: VideoPla
     }
   };
 
-  const loadVideo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const loadVideo = (videoUrl: string) => {
     const video = videoRef.current;
-    if (!file || !video) return;
+    if (!video || !videoUrl) return;
 
-    const videoURL = URL.createObjectURL(file);
-    video.src = videoURL;
+    video.src = videoUrl;
     video.load();
   };
 
@@ -264,13 +270,6 @@ export default function VideoPlayer({ danmus, isDanmuEnabled, onSeek }: VideoPla
         </div>
       </div>
       
-      <input
-        type="file"
-        accept="video/*"
-        onChange={loadVideo}
-        style={{ display: 'none' }}
-        id="videoFileInput"
-      />
     </div>
   );
 }
