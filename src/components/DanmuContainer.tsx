@@ -23,6 +23,15 @@ export default function DanmuContainer({
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;
 
+    // Debug logging
+    console.log('DanmuContainer render:', {
+      isEnabled,
+      currentTime,
+      danmusCount: danmus.length,
+      containerWidth,
+      containerHeight
+    });
+
     // Clear inactive danmus
     const oldDanmus = container.querySelectorAll('.danmu') as NodeListOf<DanmuElement>;
     oldDanmus.forEach(danmu => {
@@ -31,9 +40,11 @@ export default function DanmuContainer({
       }
     });
 
-    // Check danmus at current time
+    // Check danmus at current time - make timing more lenient
     danmus.forEach(danmu => {
-      if (Math.abs(danmu.time - currentTime) < 0.1 && !danmu.displayed) {
+      const timeDiff = Math.abs(danmu.time - currentTime);
+      if (timeDiff < 0.5 && !danmu.displayed) {
+        console.log('Showing danmu:', danmu.text, 'at time:', currentTime, 'danmu time:', danmu.time);
         danmu.displayed = true;
         
         // Create danmu element
@@ -54,19 +65,28 @@ export default function DanmuContainer({
         // Set danmu position and animation based on mode
         switch (danmu.mode) {
           case 1: // Scrolling danmu
-            danmuElement.style.top = `${Math.random() * (containerHeight - danmu.fontSize)}px`;
+            const randomTop = Math.random() * Math.max(50, containerHeight - danmu.fontSize - 50);
+            danmuElement.style.top = `${randomTop}px`;
             danmuElement.style.left = `${containerWidth}px`;
             danmuElement.isActive = true;
             
             container.appendChild(danmuElement);
             
+            // Force a reflow to get accurate width
+            danmuElement.offsetHeight;
+            
             // Get danmu width
             const danmuWidth = danmuElement.offsetWidth;
+            console.log('Danmu width:', danmuWidth, 'Container width:', containerWidth);
             
             // Animation
-            const duration = Math.max(5, 10 - (danmuWidth / containerWidth) * 5);
+            const duration = Math.max(3, 8 - (danmuWidth / containerWidth) * 3);
             danmuElement.style.transition = `transform ${duration}s linear`;
-            danmuElement.style.transform = `translateX(-${containerWidth + danmuWidth}px)`;
+            
+            // Use requestAnimationFrame to ensure the element is rendered before animation
+            requestAnimationFrame(() => {
+              danmuElement.style.transform = `translateX(-${containerWidth + danmuWidth}px)`;
+            });
             
             setTimeout(() => {
               danmuElement.isActive = false;
@@ -112,11 +132,12 @@ export default function DanmuContainer({
         top: 0,
         left: 0,
         width: '100%',
-        height: 'calc(100% - 54px)',
+        height: '100%',
         pointerEvents: 'none',
         overflow: 'hidden',
         borderRadius: '4px 4px 0 0',
-        opacity: isEnabled ? 1 : 0
+        opacity: isEnabled ? 1 : 0,
+        zIndex: 10
       }}
     />
   );

@@ -7,24 +7,15 @@ interface ConfigPanelProps {
   onClearDanmu: () => void;
   onToggleDanmu: () => void;
   isDanmuEnabled: boolean;
-  onVideoUrlChange: (url: string) => void;
 }
 
 export default function ConfigPanel({ 
   onAddDanmu, 
   onClearDanmu, 
   onToggleDanmu, 
-  isDanmuEnabled,
-  onVideoUrlChange
+  isDanmuEnabled
 }: ConfigPanelProps) {
   const [danmuInput, setDanmuInput] = useState('');
-  const [videoUrl, setVideoUrl] = useState('');
-
-  const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const url = e.target.value;
-    setVideoUrl(url);
-    onVideoUrlChange(url);
-  };
 
   const loadDanmuFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -40,17 +31,6 @@ export default function ConfigPanel({
     reader.readAsText(file);
   };
 
-  const loadMockDanmus = async () => {
-    try {
-      const response = await fetch('/mock_danmus.xml');
-      const xmlText = await response.text();
-      const danmus = parseDanmuXML(xmlText);
-      onAddDanmu(danmus);
-      alert(`Successfully loaded ${danmus.length} mock danmus`);
-    } catch (error) {
-      alert('Failed to load mock danmus');
-    }
-  };
 
   const addDanmuFromInput = () => {
     const inputText = danmuInput.trim();
@@ -91,28 +71,6 @@ export default function ConfigPanel({
       borderRadius: '4px',
       boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)'
     }}>
-      <div style={{ marginBottom: '15px' }}>
-        <label style={{
-          display: 'block',
-          marginBottom: '5px',
-          fontWeight: 'bold'
-        }}>
-          Video URL:
-        </label>
-        <input
-          type="url"
-          value={videoUrl}
-          onChange={handleVideoUrlChange}
-          placeholder="https://example.com/video.mp4"
-          style={{
-            width: '100%',
-            padding: '8px',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            boxSizing: 'border-box'
-          }}
-        />
-      </div>
 
       <div style={{ marginBottom: '15px' }}>
         <label style={{
@@ -182,22 +140,6 @@ export default function ConfigPanel({
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00a1d6'}
           >
             Add Danmu
-          </button>
-          <button
-            onClick={loadMockDanmus}
-            style={{
-              backgroundColor: '#28a745',
-              color: 'white',
-              padding: '8px 15px',
-              border: 'none',
-              borderRadius: '4px',
-              marginRight: '10px',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#218838'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#28a745'}
-          >
-            Load Mock Danmus
           </button>
           <button
             onClick={onClearDanmu}

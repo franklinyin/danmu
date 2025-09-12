@@ -27,10 +27,16 @@ export default function VideoPlayer({ danmus, isDanmuEnabled, onSeek, videoUrl }
     if (!video) return;
 
     const updateTime = () => {
-      setCurrentTime(video.currentTime);
+      const currentTime = video.currentTime;
+      setCurrentTime(currentTime);
       setDuration(video.duration || 0);
-      const percent = video.duration ? (video.currentTime / video.duration) * 100 : 0;
+      const percent = video.duration ? (currentTime / video.duration) * 100 : 0;
       setProgress(percent);
+      
+      // Debug logging every 5 seconds
+      if (Math.floor(currentTime) % 5 === 0 && currentTime > 0) {
+        console.log('Video current time:', currentTime, 'Duration:', video.duration);
+      }
     };
 
     const handleSeek = () => {
