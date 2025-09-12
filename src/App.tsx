@@ -43,7 +43,7 @@ function App() {
     // Load danmus from URL using a CORS proxy
     const loadDanmusFromUrl = async () => {
       console.log('Loading danmus from URL...');
-      const danmuUrl = 'https://storage.googleapis.com/campaign-assets-void/assets/tutorial/mock_danmus.xml';
+      const danmuUrl = 'https://storage.googleapis.com/campaign-assets-void/assets/tutorial/mock_danmus_sorted.xml';
       
       try {
         // Method 1: Try using a CORS proxy service
