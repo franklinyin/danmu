@@ -23,7 +23,7 @@ export default function DanmuContainer({
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;
 
-    // 清除非活跃弹幕
+    // Clear inactive danmus
     const oldDanmus = container.querySelectorAll('.danmu') as NodeListOf<DanmuElement>;
     oldDanmus.forEach(danmu => {
       if (!danmu.isActive) {
@@ -31,12 +31,12 @@ export default function DanmuContainer({
       }
     });
 
-    // 检查当前时间点的弹幕
+    // Check danmus at current time
     danmus.forEach(danmu => {
       if (Math.abs(danmu.time - currentTime) < 0.1 && !danmu.displayed) {
         danmu.displayed = true;
         
-        // 创建弹幕元素
+        // Create danmu element
         const danmuElement = document.createElement('div') as DanmuElement;
         danmuElement.className = 'danmu';
         danmuElement.textContent = danmu.text;
@@ -51,19 +51,19 @@ export default function DanmuContainer({
           color: #${danmu.color.toString(16).padStart(6, '0')};
         `;
         
-        // 根据模式设置弹幕位置和动画
+        // Set danmu position and animation based on mode
         switch (danmu.mode) {
-          case 1: // 滚动弹幕
+          case 1: // Scrolling danmu
             danmuElement.style.top = `${Math.random() * (containerHeight - danmu.fontSize)}px`;
             danmuElement.style.left = `${containerWidth}px`;
             danmuElement.isActive = true;
             
             container.appendChild(danmuElement);
             
-            // 获取弹幕宽度
+            // Get danmu width
             const danmuWidth = danmuElement.offsetWidth;
             
-            // 动画
+            // Animation
             const duration = Math.max(5, 10 - (danmuWidth / containerWidth) * 5);
             danmuElement.style.transition = `transform ${duration}s linear`;
             danmuElement.style.transform = `translateX(-${containerWidth + danmuWidth}px)`;
@@ -73,7 +73,7 @@ export default function DanmuContainer({
             }, duration * 1000);
             break;
             
-          case 4: // 底部固定弹幕
+          case 4: // Bottom fixed danmu
             danmuElement.style.bottom = '10px';
             danmuElement.style.left = '50%';
             danmuElement.style.transform = 'translateX(-50%)';
@@ -86,7 +86,7 @@ export default function DanmuContainer({
             }, 3000);
             break;
             
-          case 5: // 顶部固定弹幕
+          case 5: // Top fixed danmu
             danmuElement.style.top = '10px';
             danmuElement.style.left = '50%';
             danmuElement.style.transform = 'translateX(-50%)';

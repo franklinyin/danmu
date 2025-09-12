@@ -13,7 +13,7 @@ function App() {
 
   const handleClearDanmu = useCallback(() => {
     setDanmus([]);
-    // 清除DOM中的弹幕元素
+    // Clear danmu elements from DOM
     const danmuContainer = document.querySelector('.danmu-container');
     if (danmuContainer) {
       danmuContainer.innerHTML = '';
@@ -25,7 +25,7 @@ function App() {
   }, []);
 
   const handleSeek = useCallback(() => {
-    // 重置所有弹幕的displayed状态
+    // Reset displayed status of all danmus
     setDanmus(prev => prev.map(danmu => ({
       ...danmu,
       displayed: false
@@ -43,7 +43,7 @@ function App() {
       alignItems: 'center',
       minHeight: '100vh'
     }}>
-      <h1>备份-自定义弹幕视频播放器</h1>
+      <h1>Custom Danmu Video Player</h1>
       
       <VideoPlayer 
         danmus={danmus}

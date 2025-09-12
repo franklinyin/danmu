@@ -55,7 +55,7 @@ export default function VideoPlayer({ danmus, isDanmuEnabled, onSeek }: VideoPla
     const activeDanmus = danmuContainerRef.current.querySelectorAll('.danmu');
     activeDanmus.forEach(danmu => danmu.remove());
     
-    // 重置所有弹幕的displayed状态
+    // Reset displayed status of all danmus
     danmus.forEach(danmu => {
       danmu.displayed = false;
     });
@@ -118,7 +118,7 @@ export default function VideoPlayer({ danmus, isDanmuEnabled, onSeek }: VideoPla
         await document.exitFullscreen();
       }
     } catch (err) {
-      alert(`全屏错误: ${(err as Error).message}`);
+      alert(`Fullscreen error: ${(err as Error).message}`);
     }
   };
 

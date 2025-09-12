@@ -31,7 +31,7 @@ export default function ConfigPanel({
       const xmlText = e.target?.result as string;
       const danmus = parseDanmuXML(xmlText);
       onAddDanmu(danmus);
-      alert(`成功加载 ${danmus.length} 条弹幕`);
+      alert(`Successfully loaded ${danmus.length} danmus`);
     };
     reader.readAsText(file);
   };
@@ -51,7 +51,7 @@ export default function ConfigPanel({
           mode: parseInt(parts[1]),
           color: parseInt(parts[2]),
           text: parts.slice(3).join(',').trim(),
-          fontSize: 25, // 默认大小
+          fontSize: 25, // Default size
           timestamp: Math.floor(Date.now() / 1000),
           pool: 0,
           senderHash: Math.random().toString(16).substr(2, 8),
@@ -62,7 +62,7 @@ export default function ConfigPanel({
     });
 
     onAddDanmu(newDanmus);
-    alert(`成功添加 ${lines.length} 条弹幕`);
+    alert(`Successfully added ${lines.length} danmus`);
     setDanmuInput('');
   };
 
@@ -81,7 +81,7 @@ export default function ConfigPanel({
           marginBottom: '5px',
           fontWeight: 'bold'
         }}>
-          视频文件:
+          Video File:
         </label>
         <button
           onClick={loadVideoFile}
@@ -95,7 +95,7 @@ export default function ConfigPanel({
             cursor: 'pointer'
           }}
         >
-          选择视频文件
+          Select Video File
         </button>
       </div>
 
@@ -105,12 +105,12 @@ export default function ConfigPanel({
           marginBottom: '5px',
           fontWeight: 'bold'
         }}>
-          添加弹幕 (格式: 时间(秒),模式,颜色,内容):
+          Add Danmu (Format: time(seconds),mode,color,content):
         </label>
         <textarea
           value={danmuInput}
           onChange={(e) => setDanmuInput(e.target.value)}
-          placeholder="例如: 10,1,16777215,这是一条弹幕"
+          placeholder="Example: 10,1,16777215,This is a danmu"
           style={{
             width: '100%',
             height: '100px',
@@ -121,7 +121,7 @@ export default function ConfigPanel({
             resize: 'vertical'
           }}
         />
-        <small>模式: 1=滚动 4=底部 5=顶部 | 颜色: 十进制RGB值(如16777215=白色)</small>
+        <small>Mode: 1=scroll 4=bottom 5=top | Color: decimal RGB value (e.g. 16777215=white)</small>
       </div>
 
       <div style={{ marginBottom: '15px' }}>
@@ -130,7 +130,7 @@ export default function ConfigPanel({
           marginBottom: '5px',
           fontWeight: 'bold'
         }}>
-          或上传弹幕XML文件:
+          Or upload danmu XML file:
         </label>
         <input
           type="file"
@@ -166,7 +166,7 @@ export default function ConfigPanel({
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0087b0'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00a1d6'}
           >
-            添加弹幕
+            Add Danmu
           </button>
           <button
             onClick={onClearDanmu}
@@ -182,7 +182,7 @@ export default function ConfigPanel({
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0087b0'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00a1d6'}
           >
-            清除弹幕
+            Clear Danmu
           </button>
         </div>
         <div>
@@ -199,7 +199,7 @@ export default function ConfigPanel({
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0087b0'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00a1d6'}
           >
-            {isDanmuEnabled ? '弹幕开' : '弹幕关'}
+            {isDanmuEnabled ? 'Danmu On' : 'Danmu Off'}
           </button>
         </div>
       </div>

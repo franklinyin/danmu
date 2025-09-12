@@ -1,4 +1,4 @@
-// 格式化时间 (秒 -> MM:SS)
+// Format time (seconds -> MM:SS)
 export function formatTime(seconds: number): string {
   if (!seconds || isNaN(seconds)) return '00:00';
   const mins = Math.floor(seconds / 60);
@@ -6,7 +6,7 @@ export function formatTime(seconds: number): string {
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
-// 解析弹幕XML
+// Parse danmu XML
 export function parseDanmuXML(xmlText: string): any[] {
   const danmuRegex = /<d p="([^"]+)">([^<]+)<\/d>/g;
   let match;
