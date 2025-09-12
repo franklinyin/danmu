@@ -40,38 +40,66 @@ function App() {
     // Set a default video URL (you can change this to your backend URL)
     setVideoUrl('https://storage.googleapis.com/campaign-assets-void/assets/tutorial/tutorial-draft-1.mov');
     
-    // Load mock danmus automatically
-    const loadMockDanmus = async () => {
+    // Load danmus from URL automatically
+    const loadDanmusFromUrl = async () => {
       try {
-        console.log('Loading mock danmus...');
-        const response = await fetch('/mock_danmus.xml');
+        console.log('Loading danmus from URL...');
+        // Replace this URL with your Google Cloud Storage URL
+        const danmuUrl = 'https://storage.googleapis.com/campaign-assets-void/assets/tutorial/mock_danmus.xml';
+        const response = await fetch(danmuUrl);
         const xmlText = await response.text();
         console.log('XML loaded, parsing...');
         const danmus = parseDanmuXML(xmlText);
         console.log('Parsed danmus:', danmus.length, 'danmus loaded');
         console.log('First few danmus:', danmus.slice(0, 5));
-        
-        // Add a test danmu that appears immediately
-        const testDanmu = {
-          time: 0.5,
-          mode: 1,
-          fontSize: 25,
-          color: 16777215,
-          timestamp: Math.floor(Date.now() / 1000),
-          pool: 0,
-          senderHash: 'test123',
-          dbID: 'test456',
-          text: 'TEST DANMU - System Working!',
-          displayed: false
-        };
-        
-        setDanmus([testDanmu, ...danmus]);
+        setDanmus(danmus);
       } catch (error) {
-        console.error('Failed to load mock danmus:', error);
+        console.error('Failed to load danmus from URL:', error);
+        // Fallback: create some test danmus if URL fails
+        const fallbackDanmus = [
+          {
+            time: 2,
+            mode: 1,
+            fontSize: 25,
+            color: 16777215,
+            timestamp: Math.floor(Date.now() / 1000),
+            pool: 0,
+            senderHash: 'fallback1',
+            dbID: 'fallback1',
+            text: 'AI-Powered Marketing Revolution',
+            displayed: false
+          },
+          {
+            time: 5,
+            mode: 1,
+            fontSize: 25,
+            color: 16711680,
+            timestamp: Math.floor(Date.now() / 1000),
+            pool: 0,
+            senderHash: 'fallback2',
+            dbID: 'fallback2',
+            text: 'Create Stunning Social Media Campaigns',
+            displayed: false
+          },
+          {
+            time: 8,
+            mode: 4,
+            fontSize: 25,
+            color: 65280,
+            timestamp: Math.floor(Date.now() / 1000),
+            pool: 0,
+            senderHash: 'fallback3',
+            dbID: 'fallback3',
+            text: 'Amazing AI technology!',
+            displayed: false
+          }
+        ];
+        console.log('Using fallback danmus:', fallbackDanmus.length);
+        setDanmus(fallbackDanmus);
       }
     };
     
-    loadMockDanmus();
+    loadDanmusFromUrl();
   }, []);
 
   return (
